@@ -18,7 +18,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const authorName = ref('Mahdumitha Chalia')
+const authorName = ref('Madhumitha Challa')
 const userRole = ref('App Developer')
 const isCurrentUser = ref(true)
 const activitiesCreated = ref(4)

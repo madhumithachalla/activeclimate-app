@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.40"
+    "firebase": "^12.17.1",
+    "mapbox-gl": "^3.28.1",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
