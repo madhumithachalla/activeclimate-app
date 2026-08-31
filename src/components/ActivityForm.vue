@@ -131,7 +131,7 @@ const successMessage = ref('')
 // BR (B.2): Dynamic Data Structure - Client-side array (NO FIREBASE)
 const submittedActivities = ref([])
 
-// Validation Functions - BR (B.1): Validations
+// Check if user input is valid
 const validateField = (fieldName) => {
   errors.value[fieldName] = ''
   
@@ -182,7 +182,7 @@ const formatActivityName = (activity) => {
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ')
 }
-
+// Save activity to list when user submits form
 const submitForm = () => {
   // Validate all fields before submission
   ['activity', 'distance', 'duration', 'date'].forEach(field => {
