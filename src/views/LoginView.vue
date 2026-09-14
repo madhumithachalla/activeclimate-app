@@ -56,16 +56,25 @@
       <!-- Assessment build: both seeded logins are published here so the two
            roles can be compared without registering anything first. -->
       <aside class="demo-box">
-        <h2>Demo accounts</h2>
-        <p>
-          <strong>Coordinator:</strong>
-          <code>{{ DEMO_ADMIN.email }}</code> / <code>{{ DEMO_ADMIN.password }}</code>
+        <h2>Marking access</h2>
+        <p class="demo-intro">
+          Seeded accounts so both roles can be compared without registering first.
+          Deliberate for this submission only; a live deployment would not publish
+          credentials on a sign-in page.
         </p>
-        <p>
-          <strong>Member:</strong>
-          <code>{{ DEMO_MEMBER.email }}</code> / <code>{{ DEMO_MEMBER.password }}</code>
+        <div class="demo-actions">
+          <button type="button" class="demo-button" @click="useDemo(DEMO_ADMIN)">
+            <span class="demo-role">Coordinator</span>
+            <span class="demo-hint">Admin overview and review moderation</span>
+          </button>
+          <button type="button" class="demo-button" @click="useDemo(DEMO_MEMBER)">
+            <span class="demo-role">Community Member</span>
+            <span class="demo-hint">A month of logged trips and ratings</span>
+          </button>
+        </div>
+        <p v-if="filledFrom" class="demo-filled" role="status">
+          Filled in the {{ filledFrom }} details. Press Sign in to continue.
         </p>
-        <p>The member account has a month of logged trips and ratings already.</p>
       </aside>
     </div>
   </main>
@@ -85,6 +94,17 @@ const form = ref({ email: '', password: '' })
 const errors = ref({ email: '', password: '' })
 const formError = ref('')
 const submitting = ref(false)
+const filledFrom = ref('')
+
+// Fills the form rather than signing straight in, so the marker sees which
+// account is being used and can still exercise the validation on the way past.
+const useDemo = (account) => {
+  form.value.email = account.email
+  form.value.password = account.password
+  errors.value = { email: '', password: '' }
+  formError.value = ''
+  filledFrom.value = account === DEMO_ADMIN ? 'coordinator' : 'member'
+}
 
 // BR (B.1): two validation types on this form - a format rule on the email and
 // a presence rule on the password.
@@ -270,11 +290,55 @@ label {
   color: var(--text-body);
 }
 
-.demo-box code {
-  background: var(--code-bg);
-  padding: 0.1rem 0.3rem;
-  border-radius: 3px;
+.demo-intro {
+  margin: 0 0 0.7rem 0;
+  line-height: 1.5;
+}
+
+.demo-actions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.demo-button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border-input);
+  border-radius: 5px;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.demo-button:hover {
+  border-color: var(--brand);
+  background: var(--surface-hover);
+}
+
+.demo-button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.demo-role {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.demo-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.demo-filled {
+  margin: 0.6rem 0 0 0;
   font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--brand);
 }
 
 @media (max-width: 480px) {
