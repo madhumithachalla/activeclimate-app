@@ -1,50 +1,104 @@
 <template>
   <div id="app">
-    <header class="app-header">
-      <h1>🌍 ActiveClimate Melbourne</h1>
-      <p>Sport & Travel for Climate Action</p>
-    </header>
-    <MadhumithaChalla />
-    <Activities />
-    <Dashboard :activities="submittedActivities" />
-    <ActivityForm @activity-logged="submittedActivities.push($event)" />
-    <UserHighlight />
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <NavBar />
+
+    <!-- Warn rather than fail silently when the browser is blocking storage:
+         accounts and ratings will not survive a refresh in that case. -->
+    <p v-if="!storageAvailable" class="storage-warning" role="alert">
+      Browser storage is unavailable, so accounts and ratings will only last for this visit.
+      Turning off private browsing will fix it.
+    </p>
+
+    <div id="main-content">
+      <RouterView />
+    </div>
+
+    <footer class="app-footer">
+      <p class="footer-title">ActiveClimate Melbourne</p>
+      <p class="footer-note">
+        A not-for-profit connecting Melburnians to community sport and active travel.
+      </p>
+      <p class="footer-meta">
+        FIT5032 A1.3 - Basic Application Development (Version 2) - Madhumitha Challa
+      </p>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import MadhumithaChalla from './components/MadhumithaChalla.vue'
-import Activities from './components/Activities.vue'
-import ActivityForm from './components/ActivityForm.vue'
-import Dashboard from './components/Dashboard.vue'
-import UserHighlight from './components/UserHighlight.vue'
+import { RouterView } from 'vue-router'
+import NavBar from './components/NavBar.vue'
+import { isStorageAvailable } from './services/storage.js'
 
-const submittedActivities = ref([])
+const storageAvailable = isStorageAvailable()
 </script>
 
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  background: #f9f9f9;
+  background: #f9fbf9;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #2c3e2c;
 }
 
-.app-header {
-  background: linear-gradient(135deg, #2c5f2d 0%, #45a049 100%);
+#main-content {
+  flex: 1;
+}
+
+/* Keyboard users can jump straight past the nav. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #2c5f2d;
+  color: white;
+  padding: 0.65rem 1rem;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.storage-warning {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  background: #fff6e5;
+  border-bottom: 2px solid #f0ad4e;
+  color: #8a5a00;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.app-footer {
+  background: #21411f;
   color: white;
   text-align: center;
   padding: 2rem 1rem;
+  margin-top: 3rem;
 }
 
-.app-header h1 {
+.footer-title {
   margin: 0;
-  font-size: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
-.app-header p {
-  margin: 0.5rem 0 0 0;
-  font-size: 1rem;
-  opacity: 0.95;
+.footer-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.footer-meta {
+  margin: 0.85rem 0 0;
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 </style>

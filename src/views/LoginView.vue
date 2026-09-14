@@ -1,0 +1,280 @@
+<template>
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="auth-intro">Welcome back. Sign in to log activities and rate groups.</p>
+
+      <form class="auth-form" novalidate @submit.prevent="handleSubmit">
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            v-model="form.email"
+            type="email"
+            autocomplete="email"
+            class="form-input"
+            :class="{ 'has-error': errors.email }"
+            :aria-invalid="Boolean(errors.email)"
+            aria-describedby="email-error"
+            @blur="validateField('email')"
+          />
+          <span v-if="errors.email" id="email-error" class="error-text" role="alert">
+            {{ errors.email }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            v-model="form.password"
+            type="password"
+            autocomplete="current-password"
+            class="form-input"
+            :class="{ 'has-error': errors.password }"
+            :aria-invalid="Boolean(errors.password)"
+            aria-describedby="password-error"
+            @blur="validateField('password')"
+          />
+          <span v-if="errors.password" id="password-error" class="error-text" role="alert">
+            {{ errors.password }}
+          </span>
+        </div>
+
+        <p v-if="formError" class="form-error" role="alert">{{ formError }}</p>
+
+        <button type="submit" class="auth-button" :disabled="submitting">
+          {{ submitting ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        No account yet?
+        <RouterLink to="/register">Create one free</RouterLink>
+      </p>
+
+      <!-- Assessment build: the seeded coordinator login is published here so
+           the role-based pages can be demonstrated without extra setup. -->
+      <aside class="demo-box">
+        <h2>Demo accounts</h2>
+        <p>
+          <strong>Coordinator (admin):</strong>
+          <code>{{ DEMO_ADMIN.email }}</code> / <code>{{ DEMO_ADMIN.password }}</code>
+        </p>
+        <p>Register any new account to see the Community Member role.</p>
+      </aside>
+    </div>
+  </main>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { loginUser, DEMO_ADMIN } from '../services/auth.js'
+import { required, isEmail, runRules } from '../utils/validators.js'
+
+const router = useRouter()
+const route = useRoute()
+
+const form = ref({ email: '', password: '' })
+const errors = ref({ email: '', password: '' })
+const formError = ref('')
+const submitting = ref(false)
+
+// BR (B.1): two validation types on this form - a format rule on the email and
+// a presence rule on the password.
+const RULES = {
+  email: [required('Email'), isEmail],
+  password: [required('Password')]
+}
+
+const validateField = (field) => {
+  errors.value[field] = runRules(form.value[field], RULES[field])
+}
+
+const validateAll = () => {
+  Object.keys(RULES).forEach(validateField)
+  return !Object.values(errors.value).some(Boolean)
+}
+
+const handleSubmit = async () => {
+  formError.value = ''
+  if (!validateAll()) return
+
+  submitting.value = true
+  const result = await loginUser({
+    email: form.value.email,
+    password: form.value.password
+  })
+  submitting.value = false
+
+  if (!result.ok) {
+    formError.value = result.error
+    form.value.password = ''
+    return
+  }
+
+  // Only follow an internal redirect. An absolute or protocol-relative URL in
+  // the query string would be an open redirect, so it is ignored.
+  const redirect = route.query.redirect
+  const isInternal = typeof redirect === 'string' &&
+    redirect.startsWith('/') &&
+    !redirect.startsWith('//')
+
+  router.push(isInternal ? redirect : '/dashboard')
+}
+</script>
+
+<style scoped>
+.auth-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  color: #2c5f2d;
+  margin: 0 0 0.35rem 0;
+  font-size: 1.75rem;
+}
+
+.auth-intro {
+  margin: 0 0 1.5rem 0;
+  color: #6b7b6b;
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2c5f2d;
+}
+
+.form-input {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #ccd4cc;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus-visible {
+  outline: 3px solid #2c5f2d;
+  outline-offset: 1px;
+  border-color: #2c5f2d;
+}
+
+.form-input.has-error {
+  border-color: #c0392b;
+  background: #fdf4f3;
+}
+
+.error-text {
+  color: #c0392b;
+  font-size: 0.8rem;
+}
+
+.form-error {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  background: #fdf0ee;
+  border-left: 4px solid #c0392b;
+  border-radius: 4px;
+  color: #a5281b;
+  font-size: 0.85rem;
+}
+
+.auth-button {
+  background: #2c5f2d;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.auth-button:hover:not(:disabled) {
+  background: #1f4620;
+}
+
+.auth-button:disabled {
+  background: #a8b5a8;
+  cursor: not-allowed;
+}
+
+.auth-button:focus-visible {
+  outline: 3px solid #1f4620;
+  outline-offset: 2px;
+}
+
+.auth-switch {
+  margin: 1.25rem 0 0 0;
+  font-size: 0.88rem;
+  color: #6b7b6b;
+  text-align: center;
+}
+
+.auth-switch a {
+  color: #2c5f2d;
+  font-weight: 600;
+}
+
+.demo-box {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1rem;
+  background: #f4f8f4;
+  border: 1px dashed #b9cdb9;
+  border-radius: 6px;
+}
+
+.demo-box h2 {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.85rem;
+  color: #2c5f2d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.demo-box p {
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
+  color: #556355;
+}
+
+.demo-box code {
+  background: #e4ece4;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem 1.15rem;
+  }
+}
+</style>
