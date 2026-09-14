@@ -8,6 +8,8 @@ import { ROLES, useAuth, restoreSession } from '../services/auth.js'
 
 import HomeView from '../views/HomeView.vue'
 import ActivitiesView from '../views/ActivitiesView.vue'
+import AboutView from '../views/AboutView.vue'
+import FaqView from '../views/FaqView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import LogActivityView from '../views/LogActivityView.vue'
@@ -28,6 +30,18 @@ const routes = [
     name: 'activities',
     component: ActivitiesView,
     meta: { title: 'Activity Groups' }
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutView,
+    meta: { title: 'About Us' }
+  },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: FaqView,
+    meta: { title: 'FAQ' }
   },
   {
     path: '/login',

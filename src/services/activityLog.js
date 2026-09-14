@@ -8,7 +8,7 @@
 
 import { computed, ref } from 'vue'
 import { readJson, writeJson, STORAGE_KEYS } from './storage.js'
-import { findActivityBySlug } from '../data/activityGroups.js'
+import { CAR_EMISSIONS_KG_PER_KM } from '../data/sources.js'
 
 const isValidEntryList = (value) => {
   return Array.isArray(value) && value.every((entry) => (
@@ -28,12 +28,11 @@ export const useActivityLog = () => ({
   entries: computed(() => entries.value)
 })
 
-// CO2 saved is the per-km figure for that activity type, so cycling 10km and
-// hiking 10km do not claim the same benefit.
-const calculateCo2Saved = (slug, distance) => {
-  const group = findActivityBySlug(slug)
-  const rate = group ? group.co2SavingPerKm : 0.2
-  return Number((distance * rate).toFixed(2))
+// What the trip saves is the car journey it replaces, so the figure does not
+// vary by activity. 181 g CO2 per km is the Green Vehicle Guide average for a
+// new light vehicle sold in Australia (2019).
+const calculateCo2Saved = (distance) => {
+  return Number((distance * CAR_EMISSIONS_KG_PER_KM).toFixed(2))
 }
 
 export const addEntry = (user, { activity, distance, duration, date }) => {
@@ -56,7 +55,7 @@ export const addEntry = (user, { activity, distance, duration, date }) => {
     distance: numericDistance,
     duration: numericDuration,
     date,
-    co2Saved: calculateCo2Saved(activity, numericDistance),
+    co2Saved: calculateCo2Saved(numericDistance),
     timestamp: new Date().toISOString()
   }
 

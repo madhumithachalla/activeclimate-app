@@ -114,6 +114,8 @@ watch(() => route.fullPath, () => { menuOpen.value = false })
 const ALL_LINKS = [
   { to: '/', label: 'Home', roles: null },
   { to: '/activities', label: 'Activity Groups', roles: null },
+  { to: '/about', label: 'About', roles: null },
+  { to: '/faq', label: 'FAQ', roles: null },
   { to: '/log', label: 'Log Activity', roles: [ROLES.MEMBER, ROLES.ADMIN] },
   { to: '/dashboard', label: 'My Dashboard', roles: [ROLES.MEMBER, ROLES.ADMIN] },
   { to: '/admin', label: 'Admin', roles: [ROLES.ADMIN] }

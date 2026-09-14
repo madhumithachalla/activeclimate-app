@@ -6,6 +6,12 @@
         Four ways to move around Melbourne without a car. Every group is free to join, and the
         rating on each card is the average across all members who have rated it.
       </p>
+      <p class="page-note">
+        CO2 figures use {{ CAR_EMISSIONS_KG_PER_KM }} kg per km, the average for a new light vehicle
+        sold in Australia, from the Australian Government's
+        <a :href="SOURCES.greenVehicleGuide.url" target="_blank" rel="noopener noreferrer">Green
+        Vehicle Guide</a>. They assume the trip replaces a car journey.
+      </p>
     </header>
 
     <!-- BR (A.2): Responsiveness - this grid reflows from four columns to one -->
@@ -32,7 +38,7 @@
           </div>
           <div class="fact">
             <dt>CO2 saved</dt>
-            <dd>{{ group.co2SavingPerKm }} kg per km</dd>
+            <dd>{{ CAR_EMISSIONS_KG_PER_KM }} kg per km</dd>
           </div>
         </dl>
 
@@ -54,6 +60,7 @@
 import { ref } from 'vue'
 import ActivityRatingPanel from '../components/ActivityRatingPanel.vue'
 import { ACTIVITY_GROUPS } from '../data/activityGroups.js'
+import { CAR_EMISSIONS_KG_PER_KM, SOURCES } from '../data/sources.js'
 
 const joinedGroupId = ref(null)
 
@@ -83,6 +90,18 @@ h1 {
   color: var(--brand);
   font-size: 2rem;
   margin: 0 0 0.5rem;
+}
+
+.page-note {
+  max-width: 660px;
+  margin: 0.75rem auto 0;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+  line-height: 1.55;
+}
+
+.page-note a {
+  color: var(--brand);
 }
 
 .page-lead {

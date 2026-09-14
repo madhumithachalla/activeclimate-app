@@ -20,6 +20,11 @@
       <p class="footer-note">
         A not-for-profit connecting Melburnians to community sport and active travel.
       </p>
+      <nav class="footer-nav" aria-label="Footer">
+        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/faq">FAQ</RouterLink>
+        <RouterLink to="/activities">Activity groups</RouterLink>
+      </nav>
       <p class="footer-meta">
         FIT5032 A1.3 - Basic Application Development (Version 2) - Madhumitha Challa
       </p>
@@ -28,7 +33,7 @@
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
 import { isStorageAvailable } from './services/storage.js'
 
@@ -94,6 +99,24 @@ const storageAvailable = isStorageAvailable()
   margin: 0.4rem 0 0;
   font-size: 0.85rem;
   opacity: 0.85;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.footer-nav a {
+  color: var(--on-brand);
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.footer-nav a:hover {
+  opacity: 1;
 }
 
 .footer-meta {

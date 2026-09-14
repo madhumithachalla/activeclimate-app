@@ -11,7 +11,6 @@ export const ACTIVITY_GROUPS = [
     emoji: '\u{1F6B4}',
     description: 'Join local cycling groups. Build community while reducing transport emissions.',
     difficulty: 'Beginner - Advanced',
-    co2SavingPerKm: 0.2,
     meetingPoint: 'Federation Square, Melbourne',
     weeklySessions: 4
   },
@@ -23,7 +22,6 @@ export const ACTIVITY_GROUPS = [
     emoji: '\u{1F3C3}',
     description: 'Connect with runners. Track CO2 saved vs. driving. Compete on the leaderboard.',
     difficulty: 'Beginner - Advanced',
-    co2SavingPerKm: 0.15,
     meetingPoint: 'Princes Park, Carlton North',
     weeklySessions: 5
   },
@@ -35,7 +33,6 @@ export const ACTIVITY_GROUPS = [
     emoji: '\u{1F3D4}',
     description: 'Explore Melbourne trails. Group hikes every weekend. Climate-positive adventure.',
     difficulty: 'Beginner - Intermediate',
-    co2SavingPerKm: 0.25,
     meetingPoint: 'Dandenong Ranges, Upper Ferntree Gully',
     weeklySessions: 2
   },
@@ -47,7 +44,6 @@ export const ACTIVITY_GROUPS = [
     emoji: '\u{1F3CA}',
     description: 'Swimming, paddling and water activities. Community-based aquatic adventures.',
     difficulty: 'Intermediate - Advanced',
-    co2SavingPerKm: 0.18,
     meetingPoint: 'Port Phillip Bay, St Kilda',
     weeklySessions: 3
   }
