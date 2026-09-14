@@ -39,6 +39,34 @@
           {{ link.label }}
         </RouterLink>
 
+        <button
+          type="button"
+          class="theme-toggle"
+          :title="`Distances shown in ${unit}. Click to switch.`"
+          @click="toggleUnit"
+        >
+          <span aria-hidden="true">&#8646;</span>
+          <span class="theme-text">{{ unitLabel }}</span>
+          <span class="sr-only">Distance unit {{ unit }}. Activate to switch.</span>
+        </button>
+
+        <!-- Light / dark switch. Cycles Light -> Dark -> System; the label and
+             the title say which mode is active so the state is not conveyed by
+             the icon alone. -->
+        <button
+          type="button"
+          class="theme-toggle"
+          :title="`Theme: ${themeLabel}. Click to switch.`"
+          @click="cycleTheme"
+        >
+          <span aria-hidden="true">{{ themeIcon }}</span>
+          <span class="theme-text">{{ themeLabel }}</span>
+          <span class="sr-only">
+            Current theme {{ themeLabel }}{{ preference === THEMES.SYSTEM ? ` (currently ${resolvedTheme})` : '' }}.
+            Activate to change theme.
+          </span>
+        </button>
+
         <div v-if="isAuthenticated" class="account-block">
           <span class="account-badge">
             <span class="account-name">{{ currentUser.name }}</span>
@@ -62,10 +90,21 @@
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { ROLES, ROLE_LABELS, useAuth, logout } from '../services/auth.js'
+import { THEMES, THEME_OPTIONS, useTheme, cycleTheme } from '../services/theme.js'
+import { useUnits, toggleUnit } from '../services/units.js'
 
 const router = useRouter()
 const route = useRoute()
 const { currentUser, isAuthenticated } = useAuth()
+const { preference, resolvedTheme } = useTheme()
+const { unit, unitLabel } = useUnits()
+
+const currentThemeOption = computed(() => {
+  return THEME_OPTIONS.find((option) => option.value === preference.value) || THEME_OPTIONS[0]
+})
+
+const themeLabel = computed(() => currentThemeOption.value.label)
+const themeIcon = computed(() => currentThemeOption.value.icon)
 
 const menuOpen = ref(false)
 
@@ -96,8 +135,8 @@ const handleSignOut = () => {
 
 <style scoped>
 .app-header {
-  background: linear-gradient(135deg, #2c5f2d 0%, #45a049 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--header-from) 0%, var(--header-to) 100%);
+  color: var(--on-brand);
 }
 
 .header-bar {
@@ -115,7 +154,7 @@ const handleSignOut = () => {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  color: white;
+  color: var(--on-brand);
   text-decoration: none;
 }
 
@@ -143,7 +182,7 @@ const handleSignOut = () => {
   display: none;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  color: var(--on-brand);
   font-size: 1.15rem;
   border-radius: 4px;
   padding: 0.35rem 0.6rem;
@@ -158,7 +197,7 @@ const handleSignOut = () => {
 }
 
 .nav-link {
-  color: white;
+  color: var(--on-brand);
   text-decoration: none;
   padding: 0.45rem 0.7rem;
   border-radius: 4px;
@@ -178,8 +217,8 @@ const handleSignOut = () => {
 }
 
 .nav-cta {
-  background: white;
-  color: #2c5f2d;
+  background: var(--on-brand);
+  color: var(--header-from);
   text-decoration: none;
   padding: 0.45rem 0.9rem;
   border-radius: 4px;
@@ -188,7 +227,26 @@ const handleSignOut = () => {
 }
 
 .nav-cta:hover {
-  background: #eaf3ea;
+  background: var(--surface-hover);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--on-brand);
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.35rem;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .account-block {
@@ -225,7 +283,7 @@ const handleSignOut = () => {
 .sign-out {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.45);
-  color: white;
+  color: var(--on-brand);
   padding: 0.35rem 0.75rem;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -242,8 +300,9 @@ const handleSignOut = () => {
 .nav-cta:focus-visible,
 .sign-out:focus-visible,
 .nav-toggle:focus-visible,
+.theme-toggle:focus-visible,
 .brand:focus-visible {
-  outline: 3px solid #ffd54f;
+  outline: 3px solid var(--focus-ring-on-brand);
   outline-offset: 2px;
 }
 
@@ -276,6 +335,12 @@ const handleSignOut = () => {
 
   .primary-nav.is-open {
     display: flex;
+  }
+
+  .theme-toggle {
+    margin-left: 0;
+    justify-content: center;
+    margin-top: 0.4rem;
   }
 
   .account-block {

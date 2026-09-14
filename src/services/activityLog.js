@@ -82,7 +82,6 @@ export const removeEntry = (id) => {
   return { ok: true }
 }
 
-// Totals reused by both the member dashboard and the admin overview.
 export const summarise = (list) => {
   const totalDistance = list.reduce((sum, entry) => sum + entry.distance, 0)
   const totalDuration = list.reduce((sum, entry) => sum + entry.duration, 0)

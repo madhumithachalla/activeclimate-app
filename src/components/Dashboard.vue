@@ -50,7 +50,7 @@
         <div class="stat-icon">📏</div>
         <div class="stat-content">
           <p class="stat-label">Total Distance</p>
-          <p class="stat-value">{{ totalDistance }} km</p>
+          <p class="stat-value">{{ formatDistance(totalDistance) }}</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@
               <span class="co2-badge">+{{ activity.co2Saved }}kg CO₂</span>
             </p>
             <p class="activity-details">
-              {{ activity.distance }} km · {{ activity.duration }} min · {{ activity.date }}
+              {{ formatDistance(activity.distance) }} · {{ activity.duration }} min · {{ activity.date }}
             </p>
           </div>
         </div>
@@ -126,6 +126,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { formatDistance } from '../services/units.js'
 
 const props = defineProps({
   activities: {
@@ -233,14 +234,14 @@ const getActivityIcon = (activity) => {
   padding: 2rem 1rem;
   max-width: 1200px;
   margin: 2rem auto;
-  background: white;
+  background: var(--surface);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px var(--shadow-card);
 }
 
 .dashboard-title {
   text-align: center;
-  color: #2C5F2D;
+  color: var(--brand);
   font-size: 1.8rem;
   margin-bottom: 2rem;
 }
@@ -249,7 +250,7 @@ const getActivityIcon = (activity) => {
 .controls-section {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #f9f9f9;
+  background: var(--page-bg);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -263,7 +264,7 @@ const getActivityIcon = (activity) => {
 .search-input {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border);
   border-radius: 4px;
   font-size: 0.95rem;
   transition: border-color 0.3s ease;
@@ -271,8 +272,8 @@ const getActivityIcon = (activity) => {
 
 .search-input:focus {
   outline: none;
-  border-color: #2C5F2D;
-  background: #f9fff9;
+  border-color: var(--brand);
+  background: var(--surface-alt);
 }
 
 .filter-sort-group {
@@ -284,10 +285,10 @@ const getActivityIcon = (activity) => {
 .filter-select,
 .sort-select {
   padding: 0.75rem;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border);
   border-radius: 4px;
   font-size: 0.95rem;
-  background: white;
+  background: var(--surface);
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
@@ -295,8 +296,8 @@ const getActivityIcon = (activity) => {
 .filter-select:focus,
 .sort-select:focus {
   outline: none;
-  border-color: #2C5F2D;
-  background: #f9fff9;
+  border-color: var(--brand);
+  background: var(--surface-alt);
 }
 
 /* Stats Grid */
@@ -308,8 +309,8 @@ const getActivityIcon = (activity) => {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
-  border: 2px solid #2C5F2D;
+  background: var(--surface-alt);
+  border: 2px solid var(--brand);
   border-radius: 8px;
   padding: 1.5rem;
   display: flex;
@@ -335,7 +336,7 @@ const getActivityIcon = (activity) => {
 .stat-label {
   margin: 0;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
@@ -344,7 +345,7 @@ const getActivityIcon = (activity) => {
 .stat-value {
   margin: 0.5rem 0 0 0;
   font-size: 2rem;
-  color: #2C5F2D;
+  color: var(--brand);
   font-weight: bold;
 }
 
@@ -354,7 +355,7 @@ const getActivityIcon = (activity) => {
 }
 
 .activity-breakdown h3 {
-  color: #2C5F2D;
+  color: var(--brand);
   font-size: 1.3rem;
   margin-bottom: 1rem;
 }
@@ -366,8 +367,8 @@ const getActivityIcon = (activity) => {
 }
 
 .breakdown-card {
-  background: #f0f5f0;
-  border-left: 4px solid #2C5F2D;
+  background: var(--surface-alt);
+  border-left: 4px solid var(--brand);
   padding: 1rem;
   border-radius: 4px;
   text-align: center;
@@ -376,14 +377,14 @@ const getActivityIcon = (activity) => {
 .activity-name {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
 .activity-count {
   margin: 0.5rem 0 0 0;
   font-size: 2rem;
-  color: #2C5F2D;
+  color: var(--brand);
   font-weight: bold;
 }
 
@@ -393,7 +394,7 @@ const getActivityIcon = (activity) => {
 }
 
 .recent-activities h3 {
-  color: #2C5F2D;
+  color: var(--brand);
   font-size: 1.3rem;
   margin-bottom: 1rem;
 }
@@ -408,14 +409,14 @@ const getActivityIcon = (activity) => {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  background: #f9f9f9;
-  border-left: 4px solid #2C5F2D;
+  background: var(--page-bg);
+  border-left: 4px solid var(--brand);
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
 .timeline-item:hover {
-  background: #f0f5f0;
+  background: var(--surface-alt);
 }
 
 .timeline-icon {
@@ -440,8 +441,8 @@ const getActivityIcon = (activity) => {
 }
 
 .co2-badge {
-  background: #e8f5e9;
-  color: #27ae60;
+  background: var(--pill-bg);
+  color: var(--brand);
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.8rem;
@@ -451,21 +452,21 @@ const getActivityIcon = (activity) => {
 .activity-details {
   margin: 0.5rem 0 0 0;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--text-subtle);
 }
 
 /* Empty State */
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: #999;
+  color: var(--text-subtle);
   font-size: 1rem;
 }
 
 /* Achievement Badge */
 .achievement {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  color: #333;
+  background: var(--star-filled);
+  color: var(--text-strong);
   padding: 1rem;
   border-radius: 8px;
   text-align: center;

@@ -1,296 +1,177 @@
+/* ActiveClimate Melbourne - global design tokens.
+ *
+ * Every colour in the app is declared here once and referenced through
+ * var(--token) in the component styles. That is what makes the light/dark
+ * theme switch possible: flipping data-theme on <html> swaps the values and
+ * every component follows, with no per-component dark-mode rules.
+ *
+ * The theme service always writes an explicit data-theme of "light" or "dark",
+ * resolving a "system" preference in JavaScript and re-resolving it when the
+ * operating system setting changes. That keeps one dark palette here rather
+ * than a second copy inside a prefers-color-scheme media query.
+ */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Brand */
+  --brand: #2c5f2d;
+  --brand-strong: #1f4620;
+  --brand-accent: #45a049;
+  --hero-from: #234f24;
+  --hero-to: #3d8b41;
+  --header-from: #2c5f2d;
+  --header-to: #45a049;
+  --footer-bg: #21411f;
+  --on-brand: #ffffff;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Surfaces */
+  --page-bg: #f9fbf9;
+  --surface: #ffffff;
+  --surface-alt: #f6f9f6;
+  --surface-hover: #dfe9df;
+  --code-bg: #e4ece4;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Text */
+  --text-strong: #2c3e2c;
+  --text-body: #556355;
+  --text-muted: #6b7b6b;
+  --text-subtle: #8a968a;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Lines */
+  --border: #e3ebe3;
+  --border-soft: #eef2ee;
+  --border-input: #ccd4cc;
+  --border-dashed: #b9cdb9;
+
+  /* Feedback */
+  --danger: #c0392b;
+  --danger-text: #a5281b;
+  --danger-bg: #fdf0ee;
+  --danger-bg-soft: #fdf4f3;
+  --success-bg: #eef6ee;
+  --warn-bg: #fff6e5;
+  --warn-border: #f0ad4e;
+  --warn-text: #8a5a00;
+
+  /* Components */
+  --star-filled: #f5a623;
+  --star-empty: #c9c9c9;
+  --disabled: #a8b5a8;
+  --pill-bg: #e7f0e7;
+  --ghost: #d8e3d8;
+  --focus-ring: #2c5f2d;
+  --focus-ring-on-brand: #ffd54f;
+  --shadow-soft: rgba(0, 0, 0, 0.07);
+  --shadow-card: rgba(0, 0, 0, 0.08);
+
+  /* Filled buttons and badges. Kept separate from --brand because --brand
+     lightens in dark mode to stay readable as TEXT, which would make it far
+     too pale to sit behind white label text. */
+  --btn-bg: #2c5f2d;
+  --btn-bg-hover: #1f4620;
+  --btn-text: #ffffff;
+
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* Dark palette. The greens are lightened rather than reused unchanged, so that
+ * text and borders keep a readable contrast ratio against a dark ground. */
+:root[data-theme='dark'] {
+  /* The green identity is deliberately unchanged from the light theme: the
+   * header, hero, buttons and footer render in exactly the same greens. Only
+   * the neutrals invert - pale surfaces become near-black, dark text becomes
+   * near-white. The one green that does move is --brand, used for green TEXT
+   * on a page surface; at #2c5f2d on a near-black ground it fails contrast, so
+   * dark mode uses #45a049, which is already the palette's accent green. */
+  --brand: #45a049;
+  --brand-strong: #5cb45f;
+  --brand-accent: #45a049;
+  --hero-from: #234f24;
+  --hero-to: #3d8b41;
+  --header-from: #2c5f2d;
+  --header-to: #45a049;
+  --footer-bg: #21411f;
+  --on-brand: #ffffff;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  --page-bg: #12150f;
+  --surface: #1b1f18;
+  --surface-alt: #232821;
+  --surface-hover: #2d342a;
+  --code-bg: #2d342a;
+
+  --text-strong: #eef2ec;
+  --text-body: #c8d1c5;
+  --text-muted: #a2ad9e;
+  --text-subtle: #83907f;
+
+  --border: #2d342a;
+  --border-soft: #252b23;
+  --border-input: #3c453a;
+  --border-dashed: #48543f;
+
+  --danger: #f08b7d;
+  --danger-text: #f5a99d;
+  --danger-bg: #33201d;
+  --danger-bg-soft: #2a1a18;
+  --success-bg: #1d2c1d;
+  --warn-bg: #33291a;
+  --warn-border: #b98a3c;
+  --warn-text: #f0cf9a;
+
+  --star-filled: #f5a623;
+  --star-empty: #4a544a;
+  --disabled: #48524a;
+  --pill-bg: #253325;
+  --ghost: #303a2e;
+  --focus-ring: #45a049;
+  --focus-ring-on-brand: #ffd54f;
+  --shadow-soft: rgba(0, 0, 0, 0.45);
+  --shadow-card: rgba(0, 0, 0, 0.55);
+
+  /* Identical to light: a filled green button looks the same in both themes. */
+  --btn-bg: #2c5f2d;
+  --btn-bg-hover: #1f4620;
+  --btn-text: #ffffff;
+
+  color-scheme: dark;
 }
 
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
-
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#app {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
+html,
+body {
+  margin: 0;
   padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+body {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  background: var(--page-bg);
+  color: var(--text-strong);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
+a {
+  color: var(--brand);
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+/* Colour changes are eased so the switch does not flash, but the transition is
+ * dropped entirely for anyone who has asked for reduced motion. */
+body,
+body * {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

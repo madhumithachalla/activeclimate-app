@@ -38,11 +38,11 @@ const storageAvailable = isStorageAvailable()
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  background: #f9fbf9;
+  background: var(--page-bg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: #2c3e2c;
+  color: var(--text-strong);
 }
 
 #main-content {
@@ -54,8 +54,8 @@ const storageAvailable = isStorageAvailable()
   position: absolute;
   left: -9999px;
   top: 0;
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   padding: 0.65rem 1rem;
   z-index: 100;
   border-radius: 0 0 4px 0;
@@ -69,16 +69,16 @@ const storageAvailable = isStorageAvailable()
 .storage-warning {
   margin: 0;
   padding: 0.7rem 1rem;
-  background: #fff6e5;
-  border-bottom: 2px solid #f0ad4e;
-  color: #8a5a00;
+  background: var(--warn-bg);
+  border-bottom: 2px solid var(--warn-border);
+  color: var(--warn-text);
   font-size: 0.85rem;
   text-align: center;
 }
 
 .app-footer {
-  background: #21411f;
-  color: white;
+  background: var(--footer-bg);
+  color: var(--on-brand);
   text-align: center;
   padding: 2rem 1rem;
   margin-top: 3rem;

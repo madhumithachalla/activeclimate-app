@@ -80,13 +80,13 @@ const joinGroup = (group) => {
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 2rem;
   margin: 0 0 0.5rem;
 }
 
 .page-lead {
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: 660px;
@@ -100,11 +100,11 @@ h1 {
 }
 
 .activity-card {
-  background: white;
-  border: 1px solid #e3ebe3;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 8px var(--shadow-soft);
   display: flex;
   flex-direction: column;
 }
@@ -119,13 +119,13 @@ h1 {
 }
 
 .activity-card h2 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.35rem;
   margin: 0.5rem 0 0.5rem;
 }
 
 .activity-description {
-  color: #556355;
+  color: var(--text-body);
   font-size: 0.88rem;
   line-height: 1.55;
   margin: 0 0 1rem;
@@ -134,7 +134,7 @@ h1 {
 .activity-facts {
   margin: 0 0 1rem;
   padding: 0.85rem;
-  background: #f6f9f6;
+  background: var(--surface-alt);
   border-radius: 6px;
   display: grid;
   gap: 0.5rem;
@@ -148,20 +148,20 @@ h1 {
 }
 
 .fact dt {
-  color: #8a968a;
+  color: var(--text-subtle);
   font-weight: 600;
   flex-shrink: 0;
 }
 
 .fact dd {
   margin: 0;
-  color: #2c3e2c;
+  color: var(--text-strong);
   text-align: right;
 }
 
 .join-button {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border: none;
   padding: 0.7rem 1.25rem;
   border-radius: 5px;
@@ -172,18 +172,18 @@ h1 {
 }
 
 .join-button:hover {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .join-button:focus-visible {
-  outline: 3px solid #1f4620;
+  outline: 3px solid var(--brand-strong);
   outline-offset: 2px;
 }
 
 .join-note {
   margin: 0.5rem 0 0;
   font-size: 0.78rem;
-  color: #2c5f2d;
+  color: var(--brand);
   text-align: center;
 }
 

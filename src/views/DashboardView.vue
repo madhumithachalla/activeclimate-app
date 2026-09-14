@@ -76,39 +76,39 @@ const aggregateFor = (id) => getAggregate(id)
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 2rem;
   margin: 0 0 0.5rem;
 }
 
 .page-lead {
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.92rem;
   margin: 0;
 }
 
 .my-ratings {
   margin-top: 2.5rem;
-  background: white;
+  background: var(--surface);
   border-radius: 10px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 8px var(--shadow-soft);
 }
 
 .my-ratings h2 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.2rem;
   margin: 0 0 1rem;
 }
 
 .empty-note {
   margin: 0;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
 .empty-note a {
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
 }
 
@@ -127,20 +127,20 @@ h1 {
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  background: #f6f9f6;
+  background: var(--surface-alt);
   border-radius: 6px;
   padding: 0.7rem 0.9rem;
 }
 
 .rating-activity {
   font-weight: 600;
-  color: #2c3e2c;
+  color: var(--text-strong);
   font-size: 0.9rem;
 }
 
 .rating-average {
   font-size: 0.8rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 @media (max-width: 640px) {

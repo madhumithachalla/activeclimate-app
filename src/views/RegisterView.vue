@@ -216,21 +216,21 @@ const handleSubmit = async () => {
 }
 
 .auth-card {
-  background: white;
+  background: var(--surface);
   border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px var(--shadow-card);
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   margin: 0 0 0.35rem 0;
   font-size: 1.75rem;
 }
 
 .auth-intro {
   margin: 0 0 1.5rem 0;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -249,12 +249,12 @@ h1 {
 label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .form-input {
   padding: 0.65rem 0.75rem;
-  border: 1px solid #ccd4cc;
+  border: 1px solid var(--border-input);
   border-radius: 5px;
   font: inherit;
   font-size: 0.95rem;
@@ -263,38 +263,38 @@ label {
 }
 
 .form-input:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 1px;
-  border-color: #2c5f2d;
+  border-color: var(--brand);
 }
 
 .form-input.has-error {
-  border-color: #c0392b;
-  background: #fdf4f3;
+  border-color: var(--danger);
+  background: var(--danger-bg-soft);
 }
 
 .hint-text {
   font-size: 0.75rem;
-  color: #8a968a;
+  color: var(--text-subtle);
 }
 
 .error-text {
-  color: #c0392b;
+  color: var(--danger);
   font-size: 0.8rem;
 }
 
 .form-error {
   margin: 0;
   padding: 0.65rem 0.75rem;
-  background: #fdf0ee;
-  border-left: 4px solid #c0392b;
+  background: var(--danger-bg);
+  border-left: 4px solid var(--danger);
   border-radius: 4px;
-  color: #a5281b;
+  color: var(--danger-text);
   font-size: 0.85rem;
 }
 
 .role-group {
-  border: 1px solid #dde4dd;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.85rem 1rem 1rem;
   margin: 0;
@@ -303,7 +303,7 @@ label {
 .role-group legend {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
   padding: 0 0.35rem;
 }
 
@@ -324,7 +324,7 @@ label {
 }
 
 .role-option input:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 2px;
 }
 
@@ -336,18 +336,18 @@ label {
 .role-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2c3e2c;
+  color: var(--text-strong);
 }
 
 .role-desc {
   font-size: 0.78rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
 .auth-button {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border: none;
   padding: 0.75rem;
   border-radius: 5px;
@@ -358,28 +358,28 @@ label {
 }
 
 .auth-button:hover:not(:disabled) {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .auth-button:disabled {
-  background: #a8b5a8;
+  background: var(--disabled);
   cursor: not-allowed;
 }
 
 .auth-button:focus-visible {
-  outline: 3px solid #1f4620;
+  outline: 3px solid var(--brand-strong);
   outline-offset: 2px;
 }
 
 .auth-switch {
   margin: 1.25rem 0 0 0;
   font-size: 0.88rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
   text-align: center;
 }
 
 .auth-switch a {
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
 }
 

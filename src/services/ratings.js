@@ -27,7 +27,8 @@ const isValidRatingList = (value) => {
   ))
 }
 
-// Single source of truth. Loaded once, kept reactive from then on.
+// Loaded once at startup, then kept in memory so every view reads the same
+// array and updates together.
 const ratings = ref(readJson(STORAGE_KEYS.ratings, [], isValidRatingList))
 
 const persist = () => writeJson(STORAGE_KEYS.ratings, ratings.value)
@@ -120,7 +121,6 @@ export const getAggregate = (activityId) => {
   }
 }
 
-// Site-wide average across every activity, for the admin dashboard.
 export const getOverallAggregate = () => {
   const count = ratings.value.length
   if (count === 0) return { average: 0, count: 0 }
@@ -128,7 +128,6 @@ export const getOverallAggregate = () => {
   return { average: Number((total / count).toFixed(1)), count }
 }
 
-// Admin moderation: remove a review that should not stand.
 export const deleteRating = (activityId, userId) => {
   const index = ratings.value.findIndex(
     (rating) => rating.activityId === activityId && rating.userId === userId

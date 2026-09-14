@@ -30,15 +30,15 @@
 
       <!-- BR (B.1): Validation type 2 - numeric range -->
       <div class="form-group">
-        <label for="distance">Distance (km) <span aria-hidden="true">*</span></label>
+        <label for="distance">Distance ({{ unitLabel }}) <span aria-hidden="true">*</span></label>
         <input
           id="distance"
           v-model.number="form.distance"
           type="number"
-          min="0.1"
-          max="500"
+          :min="distanceLimits.min"
+          :max="distanceLimits.max"
           step="0.1"
-          placeholder="e.g. 12.5"
+          :placeholder="`e.g. ${isMiles ? '7.8' : '12.5'}`"
           class="form-input"
           :class="{ 'has-error': errors.distance }"
           :aria-invalid="Boolean(errors.distance)"
@@ -105,12 +105,15 @@
       <ul class="activities-list">
         <li v-for="entry in recentEntries" :key="entry.id" class="activity-item">
           <span class="activity-type">{{ formatActivityName(entry.activity) }}</span>
-          <span class="activity-distance">{{ entry.distance }} km</span>
+          <span class="activity-distance">{{ formatDistance(entry.distance) }}</span>
           <span class="activity-date">{{ entry.date }}</span>
           <span class="co2-saved">CO2 {{ entry.co2Saved }} kg</span>
         </li>
       </ul>
-      <p class="total-co2">Total CO2 saved: {{ totals.totalCo2 }} kg</p>
+      <p class="total-co2">
+        {{ formatDistance(totals.totalDistance) }} logged &middot;
+        {{ totals.totalCo2 }} kg CO2 saved
+      </p>
     </div>
   </div>
 </template>
@@ -120,10 +123,17 @@ import { computed, ref } from 'vue'
 import { ACTIVITY_GROUPS } from '../data/activityGroups.js'
 import { useAuth } from '../services/auth.js'
 import { useActivityLog, addEntry, entriesForUser, summarise } from '../services/activityLog.js'
+import { useUnits, inputToKm, formatDistance } from '../services/units.js'
 import { required, inRange, runRules } from '../utils/validators.js'
 
 const { currentUser } = useAuth()
 const { entries } = useActivityLog()
+const { unitLabel, isMiles } = useUnits()
+
+// The stored limits are 0.1-500 km; in miles the same range is 0.1-310.
+const distanceLimits = computed(() => (
+  isMiles.value ? { min: 0.1, max: 310 } : { min: 0.1, max: 500 }
+))
 
 const today = new Date().toISOString().slice(0, 10)
 
@@ -140,7 +150,7 @@ const notInFuture = (value) => {
 
 const RULES = {
   activity: [required('Activity type')],
-  distance: [required('Distance'), inRange('Distance', 0.1, 500)],
+  distance: [required('Distance'), (value) => inRange('Distance', distanceLimits.value.min, distanceLimits.value.max)(value)],
   duration: [required('Duration'), inRange('Duration', 5, 600)],
   date: [required('Date'), notInFuture]
 }
@@ -178,7 +188,8 @@ const submitForm = () => {
 
   const result = addEntry(currentUser.value, {
     activity: form.value.activity,
-    distance: form.value.distance,
+    // The field is entered in whichever unit is on screen; storage is always km.
+    distance: inputToKm(form.value.distance),
     duration: form.value.duration,
     date: form.value.date
   })
@@ -188,7 +199,7 @@ const submitForm = () => {
     return
   }
 
-  successMessage.value = `Activity logged. You saved ${result.entry.co2Saved} kg of CO2.`
+  successMessage.value = `${formatDistance(result.entry.distance)} logged. You saved ${result.entry.co2Saved} kg of CO2.`
   form.value = { activity: '', distance: null, duration: null, date: '' }
   errors.value = { activity: '', distance: '', duration: '', date: '' }
 
@@ -198,23 +209,23 @@ const submitForm = () => {
 
 <style scoped>
 .form-container {
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 10px;
   max-width: 560px;
   margin: 0 auto;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px var(--shadow-card);
 }
 
 .form-container h3 {
-  color: #2c5f2d;
+  color: var(--brand);
   margin: 0 0 0.35rem;
   font-size: 1.4rem;
 }
 
 .form-intro {
   margin: 0 0 1.5rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.88rem;
   line-height: 1.55;
 }
@@ -234,49 +245,49 @@ const submitForm = () => {
 label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .form-input {
   padding: 0.65rem 0.75rem;
-  border: 1px solid #ccd4cc;
+  border: 1px solid var(--border-input);
   border-radius: 5px;
   font: inherit;
   font-size: 0.95rem;
   width: 100%;
   box-sizing: border-box;
-  background: white;
+  background: var(--surface);
 }
 
 .form-input:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 1px;
-  border-color: #2c5f2d;
+  border-color: var(--brand);
 }
 
 .form-input.has-error {
-  border-color: #c0392b;
-  background: #fdf4f3;
+  border-color: var(--danger);
+  background: var(--danger-bg-soft);
 }
 
 .error-text {
-  color: #c0392b;
+  color: var(--danger);
   font-size: 0.8rem;
 }
 
 .form-error {
   margin: 0;
   padding: 0.65rem 0.75rem;
-  background: #fdf0ee;
-  border-left: 4px solid #c0392b;
+  background: var(--danger-bg);
+  border-left: 4px solid var(--danger);
   border-radius: 4px;
-  color: #a5281b;
+  color: var(--danger-text);
   font-size: 0.85rem;
 }
 
 .submit-button {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border: none;
   padding: 0.75rem;
   border-radius: 5px;
@@ -286,26 +297,26 @@ label {
 }
 
 .submit-button:hover:not(:disabled) {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .submit-button:disabled {
-  background: #a8b5a8;
+  background: var(--disabled);
   cursor: not-allowed;
 }
 
 .submit-button:focus-visible {
-  outline: 3px solid #1f4620;
+  outline: 3px solid var(--brand-strong);
   outline-offset: 2px;
 }
 
 .success-message {
   margin: 0;
   padding: 0.65rem 0.75rem;
-  background: #eef6ee;
-  border-left: 4px solid #2c5f2d;
+  background: var(--success-bg);
+  border-left: 4px solid var(--brand);
   border-radius: 4px;
-  color: #1f4620;
+  color: var(--brand-strong);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -313,11 +324,11 @@ label {
 .submitted-activities {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e6ece6;
+  border-top: 1px solid var(--border);
 }
 
 .submitted-activities h4 {
-  color: #2c5f2d;
+  color: var(--brand);
   margin: 0 0 0.85rem;
   font-size: 1rem;
 }
@@ -336,7 +347,7 @@ label {
   grid-template-columns: 1.2fr 0.7fr 1fr 0.9fr;
   gap: 0.5rem;
   align-items: center;
-  background: #f6f9f6;
+  background: var(--surface-alt);
   border-radius: 5px;
   padding: 0.55rem 0.7rem;
   font-size: 0.82rem;
@@ -344,16 +355,16 @@ label {
 
 .activity-type {
   font-weight: 600;
-  color: #2c3e2c;
+  color: var(--text-strong);
 }
 
 .activity-distance,
 .activity-date {
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .co2-saved {
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
   text-align: right;
 }
@@ -361,7 +372,7 @@ label {
 .total-co2 {
   margin: 0.85rem 0 0;
   font-weight: 700;
-  color: #2c5f2d;
+  color: var(--brand);
   text-align: right;
   font-size: 0.9rem;
 }

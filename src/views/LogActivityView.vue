@@ -32,13 +32,13 @@ const { currentUser } = useAuth()
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 2rem;
   margin: 0 0 0.5rem;
 }
 
 .page-lead {
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.92rem;
   margin: 0;
 }

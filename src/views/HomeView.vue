@@ -26,7 +26,9 @@
           <p class="impact-label">Activities logged</p>
         </article>
         <article class="impact-card">
-          <p class="impact-value">{{ community.totalDistance }}<span class="unit">km</span></p>
+          <p class="impact-value">
+            {{ displayDistance(community.totalDistance) }}<span class="unit">{{ unitLabel }}</span>
+          </p>
           <p class="impact-label">Distance travelled actively</p>
         </article>
         <article class="impact-card">
@@ -85,10 +87,12 @@ import { ACTIVITY_GROUPS } from '../data/activityGroups.js'
 import { useAuth } from '../services/auth.js'
 import { useActivityLog, summarise } from '../services/activityLog.js'
 import { getAggregate, getOverallAggregate, useRatings } from '../services/ratings.js'
+import { useUnits, displayDistance } from '../services/units.js'
 
 const { isAuthenticated } = useAuth()
 const { entries } = useActivityLog()
 const { ratings } = useRatings()
+const { unitLabel } = useUnits()
 
 const PILLARS = [
   {
@@ -127,8 +131,8 @@ const ratingSummaryText = (activityId) => {
 
 <style scoped>
 .hero {
-  background: linear-gradient(135deg, #234f24 0%, #3d8b41 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
+  color: var(--on-brand);
   padding: 3.5rem 1rem;
 }
 
@@ -170,17 +174,17 @@ const ratingSummaryText = (activityId) => {
 }
 
 .cta-primary {
-  background: white;
-  color: #234f24;
+  background: var(--on-brand);
+  color: var(--hero-from);
 }
 
 .cta-primary:hover {
-  background: #e8f1e8;
+  background: var(--surface-hover);
 }
 
 .cta-secondary {
   background: rgba(255, 255, 255, 0.16);
-  color: white;
+  color: var(--on-brand);
   border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
@@ -190,12 +194,12 @@ const ratingSummaryText = (activityId) => {
 
 .cta-primary:focus-visible,
 .cta-secondary:focus-visible {
-  outline: 3px solid #ffd54f;
+  outline: 3px solid var(--focus-ring-on-brand);
   outline-offset: 3px;
 }
 
 .impact {
-  background: #f4f8f4;
+  background: var(--surface-alt);
   padding: 2rem 1rem;
 }
 
@@ -208,32 +212,32 @@ const ratingSummaryText = (activityId) => {
 }
 
 .impact-card {
-  background: white;
+  background: var(--surface);
   border-radius: 8px;
   padding: 1.25rem 1rem;
   text-align: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 4px var(--shadow-soft);
 }
 
 .impact-value {
   margin: 0;
   font-size: 2rem;
   font-weight: 800;
-  color: #2c5f2d;
+  color: var(--brand);
   line-height: 1.1;
 }
 
 .unit {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #6b7b6b;
+  color: var(--text-muted);
   margin-left: 0.15rem;
 }
 
 .impact-label {
   margin: 0.35rem 0 0;
   font-size: 0.8rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .content-section {
@@ -244,13 +248,13 @@ const ratingSummaryText = (activityId) => {
 
 .content-section.alt {
   max-width: none;
-  background: #ffffff;
-  border-top: 1px solid #e6ece6;
-  border-bottom: 1px solid #e6ece6;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .content-section h2 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.75rem;
   text-align: center;
   margin: 0 0 0.5rem;
@@ -258,7 +262,7 @@ const ratingSummaryText = (activityId) => {
 
 .section-lead {
   text-align: center;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.92rem;
   margin: 0 auto 2rem;
 }
@@ -273,29 +277,29 @@ const ratingSummaryText = (activityId) => {
 }
 
 .pillar-card {
-  background: white;
-  border-left: 4px solid #45a049;
+  background: var(--surface);
+  border-left: 4px solid var(--brand-accent);
   border-radius: 6px;
   padding: 1.25rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 4px var(--shadow-soft);
 }
 
 .pillar-card h3 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.1rem;
   margin: 0 0 0.5rem;
 }
 
 .pillar-card p {
   margin: 0;
-  color: #556355;
+  color: var(--text-body);
   font-size: 0.9rem;
   line-height: 1.6;
 }
 
 .preview-card {
-  background: #f8fbf8;
-  border: 1px solid #e3ebe3;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1.25rem;
   text-align: center;
@@ -307,7 +311,7 @@ const ratingSummaryText = (activityId) => {
 }
 
 .preview-card h3 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.1rem;
   margin: 0.5rem 0 0.15rem;
 }
@@ -315,25 +319,25 @@ const ratingSummaryText = (activityId) => {
 .preview-meta {
   margin: 0 0 0.5rem;
   font-size: 0.78rem;
-  color: #8a968a;
+  color: var(--text-subtle);
 }
 
 .preview-count {
   margin: 0.35rem 0 0;
   font-size: 0.78rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .centred {
   display: block;
   width: fit-content;
   margin: 2rem auto 0;
-  background: #2c5f2d;
-  border-color: #2c5f2d;
+  background: var(--btn-bg);
+  border-color: var(--brand);
 }
 
 .centred:hover {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 @media (max-width: 640px) {

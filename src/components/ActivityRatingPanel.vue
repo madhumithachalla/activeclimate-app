@@ -173,7 +173,7 @@ const handleSubmit = () => {
 
 <style scoped>
 .rating-panel {
-  border-top: 1px solid #e3e8e3;
+  border-top: 1px solid var(--border);
   margin-top: 1rem;
   padding-top: 1rem;
   text-align: left;
@@ -194,29 +194,29 @@ const handleSubmit = () => {
 .average {
   font-size: 2rem;
   font-weight: 700;
-  color: #2c5f2d;
+  color: var(--brand);
   line-height: 1;
 }
 
 .out-of {
   font-size: 0.85rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .count {
   margin: 0.15rem 0 0 0;
   font-size: 0.8rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .sign-in-prompt {
   margin: 0.85rem 0 0 0;
   font-size: 0.85rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .sign-in-prompt a {
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
 }
 
@@ -236,19 +236,19 @@ const handleSubmit = () => {
 .rating-label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .optional {
   font-weight: 400;
-  color: #8a968a;
+  color: var(--text-subtle);
 }
 
 .review-input {
   width: 100%;
   box-sizing: border-box;
   padding: 0.5rem;
-  border: 1px solid #ccd4cc;
+  border: 1px solid var(--border-input);
   border-radius: 4px;
   font: inherit;
   font-size: 0.85rem;
@@ -256,37 +256,37 @@ const handleSubmit = () => {
 }
 
 .review-input:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 1px;
 }
 
 .review-input.has-error {
-  border-color: #c0392b;
+  border-color: var(--danger);
 }
 
 .char-count {
   align-self: flex-end;
   font-size: 0.7rem;
-  color: #8a968a;
+  color: var(--text-subtle);
 }
 
 .error-text {
   margin: 0;
-  color: #c0392b;
+  color: var(--danger);
   font-size: 0.8rem;
 }
 
 .success-text {
   margin: 0;
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .rate-button {
   align-self: flex-start;
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border: none;
   padding: 0.5rem 1.1rem;
   border-radius: 4px;
@@ -296,16 +296,16 @@ const handleSubmit = () => {
 }
 
 .rate-button:hover:not(:disabled) {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .rate-button:disabled {
-  background: #a8b5a8;
+  background: var(--disabled);
   cursor: not-allowed;
 }
 
 .rate-button:focus-visible {
-  outline: 3px solid #1f4620;
+  outline: 3px solid var(--brand-strong);
   outline-offset: 2px;
 }
 
@@ -319,7 +319,7 @@ const handleSubmit = () => {
 }
 
 .review-item {
-  background: #f6f9f6;
+  background: var(--surface-alt);
   border-radius: 6px;
   padding: 0.6rem 0.75rem;
 }
@@ -333,13 +333,13 @@ const handleSubmit = () => {
 
 .review-author {
   font-size: 0.85rem;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .review-body {
   margin: 0.25rem 0 0 0;
   font-size: 0.85rem;
-  color: #556355;
+  color: var(--text-body);
   line-height: 1.45;
 }
 </style>

@@ -26,7 +26,6 @@ export const maxLength = (label, max) => (value) => {
     : ''
 }
 
-// Validation type 1: format / pattern matching.
 export const isEmail = (value) => {
   return EMAIL_PATTERN.test(normaliseEmail(value))
     ? ''
@@ -39,7 +38,6 @@ export const isName = (value) => {
     : 'Name can only contain letters, spaces, apostrophes and hyphens'
 }
 
-// Validation type 2: composition / strength rules.
 export const isStrongPassword = (value) => {
   const password = String(value ?? '')
   if (password.length < 8) return 'Password must be at least 8 characters'
@@ -49,12 +47,10 @@ export const isStrongPassword = (value) => {
   return ''
 }
 
-// Validation type 3: cross-field comparison.
 export const matches = (otherValue, label) => (value) => {
   return value === otherValue ? '' : `${label} do not match`
 }
 
-// Validation type 4: numeric range, used by the rating feature.
 export const inRange = (label, min, max) => (value) => {
   const number = Number(value)
   if (!Number.isFinite(number)) return `${label} must be a number`
@@ -70,7 +66,6 @@ export const isSafe = (label) => (value) => {
     : ''
 }
 
-// Run rules in order and return the first failure. Empty string means valid.
 export const runRules = (value, rules) => {
   for (const rule of rules) {
     const error = rule(value)

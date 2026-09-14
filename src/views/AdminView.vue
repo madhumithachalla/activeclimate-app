@@ -29,6 +29,12 @@
         <p class="stat-label">Activities logged</p>
       </article>
       <article class="stat-card">
+        <p class="stat-value">
+          {{ displayDistance(totals.totalDistance) }}<span class="unit">{{ unitLabel }}</span>
+        </p>
+        <p class="stat-label">Distance logged</p>
+      </article>
+      <article class="stat-card">
         <p class="stat-value">{{ totals.totalCo2 }}<span class="unit">kg</span></p>
         <p class="stat-label">Total CO2 saved</p>
       </article>
@@ -152,6 +158,7 @@ import StarRating from '../components/StarRating.vue'
 import { ACTIVITY_GROUPS, findActivityById } from '../data/activityGroups.js'
 import { ROLES, ROLE_LABELS, listUsers, countUsersByRole } from '../services/auth.js'
 import { useActivityLog, entriesForUser, summarise, allEntries } from '../services/activityLog.js'
+import { useUnits, displayDistance } from '../services/units.js'
 import {
   useRatings,
   getAggregate,
@@ -161,6 +168,7 @@ import {
 
 const { entries } = useActivityLog()
 const { ratings } = useRatings()
+const { unitLabel } = useUnits()
 
 const moderationMessage = ref('')
 
@@ -247,8 +255,8 @@ const formatDate = (iso) => {
   display: inline-block;
   margin: 0 0 0.5rem;
   padding: 0.25rem 0.7rem;
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border-radius: 20px;
   font-size: 0.7rem;
   font-weight: 700;
@@ -257,13 +265,13 @@ const formatDate = (iso) => {
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 2rem;
   margin: 0 0 0.5rem;
 }
 
 .page-lead {
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.92rem;
   line-height: 1.6;
   margin: 0;
@@ -278,44 +286,44 @@ h1 {
 }
 
 .stat-card {
-  background: white;
+  background: var(--surface);
   border-radius: 8px;
   padding: 1.15rem 1rem;
   text-align: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 4px var(--shadow-soft);
 }
 
 .stat-value {
   margin: 0;
   font-size: 1.85rem;
   font-weight: 800;
-  color: #2c5f2d;
+  color: var(--brand);
   line-height: 1.1;
 }
 
 .unit {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #6b7b6b;
+  color: var(--text-muted);
   margin-left: 0.15rem;
 }
 
 .stat-label {
   margin: 0.3rem 0 0;
   font-size: 0.78rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .panel {
-  background: white;
+  background: var(--surface);
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 1.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 8px var(--shadow-soft);
 }
 
 .panel h2 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.2rem;
   margin: 0 0 1rem;
 }
@@ -336,13 +344,13 @@ th,
 td {
   text-align: left;
   padding: 0.6rem 0.7rem;
-  border-bottom: 1px solid #eef2ee;
+  border-bottom: 1px solid var(--border-soft);
   vertical-align: middle;
 }
 
 thead th {
-  background: #f6f9f6;
-  color: #2c5f2d;
+  background: var(--surface-alt);
+  color: var(--brand);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -350,7 +358,7 @@ thead th {
 
 tbody th {
   font-weight: 600;
-  color: #2c3e2c;
+  color: var(--text-strong);
 }
 
 .group-cell {
@@ -360,7 +368,7 @@ tbody th {
 .numeric {
   margin-left: 0.4rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .distribution {
@@ -379,13 +387,13 @@ tbody th {
 
 .dist-label {
   width: 0.75rem;
-  color: #8a968a;
+  color: var(--text-subtle);
 }
 
 .dist-track {
   flex: 1;
   height: 7px;
-  background: #eef2ee;
+  background: var(--border-soft);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -393,13 +401,13 @@ tbody th {
 .dist-fill {
   display: block;
   height: 100%;
-  background: #45a049;
+  background: var(--brand-accent);
 }
 
 .dist-count {
   width: 1rem;
   text-align: right;
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .role-pill {
@@ -411,25 +419,25 @@ tbody th {
 }
 
 .role-member {
-  background: #e7f0e7;
-  color: #2c5f2d;
+  background: var(--pill-bg);
+  color: var(--brand);
 }
 
 .role-admin {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
 }
 
 .panel-note {
   margin: 1rem 0 0;
   font-size: 0.8rem;
-  color: #8a968a;
+  color: var(--text-subtle);
   line-height: 1.55;
 }
 
 .empty-note {
   margin: 0;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -443,7 +451,7 @@ tbody th {
 }
 
 .moderation-item {
-  background: #f6f9f6;
+  background: var(--surface-alt);
   border-radius: 6px;
   padding: 0.8rem 0.9rem;
 }
@@ -454,24 +462,24 @@ tbody th {
   gap: 0.5rem;
   flex-wrap: wrap;
   font-size: 0.85rem;
-  color: #2c3e2c;
+  color: var(--text-strong);
 }
 
 .moderation-group {
-  color: #6b7b6b;
+  color: var(--text-muted);
 }
 
 .moderation-body {
   margin: 0.4rem 0 0.6rem;
   font-size: 0.85rem;
-  color: #556355;
+  color: var(--text-body);
   line-height: 1.5;
 }
 
 .remove-button {
-  background: white;
-  border: 1px solid #c0392b;
-  color: #c0392b;
+  background: var(--surface);
+  border: 1px solid var(--danger);
+  color: var(--danger);
   padding: 0.35rem 0.8rem;
   border-radius: 4px;
   font-size: 0.78rem;
@@ -480,19 +488,19 @@ tbody th {
 }
 
 .remove-button:hover {
-  background: #c0392b;
-  color: white;
+  background: var(--danger);
+  color: var(--on-brand);
 }
 
 .remove-button:focus-visible {
-  outline: 3px solid #c0392b;
+  outline: 3px solid var(--danger);
   outline-offset: 2px;
 }
 
 .moderation-message {
   margin: 0.85rem 0 0;
   font-size: 0.85rem;
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
 }
 

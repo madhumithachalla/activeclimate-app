@@ -27,28 +27,28 @@ import { RouterLink } from 'vue-router'
 }
 
 .message-card {
-  background: white;
+  background: var(--surface);
   border-radius: 10px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px var(--shadow-card);
 }
 
 .status-code {
   margin: 0;
   font-size: 3.5rem;
   font-weight: 800;
-  color: #d8e3d8;
+  color: var(--ghost);
   line-height: 1;
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   font-size: 1.5rem;
   margin: 0.5rem 0 0.75rem;
 }
 
 .message-body {
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
   margin: 0 0 1.5rem;
@@ -71,26 +71,26 @@ h1 {
 }
 
 .primary-action {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
 }
 
 .primary-action:hover {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .secondary-action {
-  background: #eef3ee;
-  color: #2c5f2d;
+  background: var(--surface-alt);
+  color: var(--brand);
 }
 
 .secondary-action:hover {
-  background: #dfe9df;
+  background: var(--surface-hover);
 }
 
 .primary-action:focus-visible,
 .secondary-action:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 2px;
 }
 </style>

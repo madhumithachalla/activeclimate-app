@@ -53,15 +53,19 @@
         <RouterLink to="/register">Create one free</RouterLink>
       </p>
 
-      <!-- Assessment build: the seeded coordinator login is published here so
-           the role-based pages can be demonstrated without extra setup. -->
+      <!-- Assessment build: both seeded logins are published here so the two
+           roles can be compared without registering anything first. -->
       <aside class="demo-box">
         <h2>Demo accounts</h2>
         <p>
-          <strong>Coordinator (admin):</strong>
+          <strong>Coordinator:</strong>
           <code>{{ DEMO_ADMIN.email }}</code> / <code>{{ DEMO_ADMIN.password }}</code>
         </p>
-        <p>Register any new account to see the Community Member role.</p>
+        <p>
+          <strong>Member:</strong>
+          <code>{{ DEMO_MEMBER.email }}</code> / <code>{{ DEMO_MEMBER.password }}</code>
+        </p>
+        <p>The member account has a month of logged trips and ratings already.</p>
       </aside>
     </div>
   </main>
@@ -71,6 +75,7 @@
 import { ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { loginUser, DEMO_ADMIN } from '../services/auth.js'
+import { DEMO_MEMBER } from '../services/demoData.js'
 import { required, isEmail, runRules } from '../utils/validators.js'
 
 const router = useRouter()
@@ -133,21 +138,21 @@ const handleSubmit = async () => {
 }
 
 .auth-card {
-  background: white;
+  background: var(--surface);
   border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px var(--shadow-card);
 }
 
 h1 {
-  color: #2c5f2d;
+  color: var(--brand);
   margin: 0 0 0.35rem 0;
   font-size: 1.75rem;
 }
 
 .auth-intro {
   margin: 0 0 1.5rem 0;
-  color: #6b7b6b;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -166,12 +171,12 @@ h1 {
 label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c5f2d;
+  color: var(--brand);
 }
 
 .form-input {
   padding: 0.65rem 0.75rem;
-  border: 1px solid #ccd4cc;
+  border: 1px solid var(--border-input);
   border-radius: 5px;
   font: inherit;
   font-size: 0.95rem;
@@ -180,34 +185,34 @@ label {
 }
 
 .form-input:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 1px;
-  border-color: #2c5f2d;
+  border-color: var(--brand);
 }
 
 .form-input.has-error {
-  border-color: #c0392b;
-  background: #fdf4f3;
+  border-color: var(--danger);
+  background: var(--danger-bg-soft);
 }
 
 .error-text {
-  color: #c0392b;
+  color: var(--danger);
   font-size: 0.8rem;
 }
 
 .form-error {
   margin: 0;
   padding: 0.65rem 0.75rem;
-  background: #fdf0ee;
-  border-left: 4px solid #c0392b;
+  background: var(--danger-bg);
+  border-left: 4px solid var(--danger);
   border-radius: 4px;
-  color: #a5281b;
+  color: var(--danger-text);
   font-size: 0.85rem;
 }
 
 .auth-button {
-  background: #2c5f2d;
-  color: white;
+  background: var(--btn-bg);
+  color: var(--on-brand);
   border: none;
   padding: 0.75rem;
   border-radius: 5px;
@@ -218,43 +223,43 @@ label {
 }
 
 .auth-button:hover:not(:disabled) {
-  background: #1f4620;
+  background: var(--btn-bg-hover);
 }
 
 .auth-button:disabled {
-  background: #a8b5a8;
+  background: var(--disabled);
   cursor: not-allowed;
 }
 
 .auth-button:focus-visible {
-  outline: 3px solid #1f4620;
+  outline: 3px solid var(--brand-strong);
   outline-offset: 2px;
 }
 
 .auth-switch {
   margin: 1.25rem 0 0 0;
   font-size: 0.88rem;
-  color: #6b7b6b;
+  color: var(--text-muted);
   text-align: center;
 }
 
 .auth-switch a {
-  color: #2c5f2d;
+  color: var(--brand);
   font-weight: 600;
 }
 
 .demo-box {
   margin-top: 1.5rem;
   padding: 0.9rem 1rem;
-  background: #f4f8f4;
-  border: 1px dashed #b9cdb9;
+  background: var(--surface-alt);
+  border: 1px dashed var(--border-dashed);
   border-radius: 6px;
 }
 
 .demo-box h2 {
   margin: 0 0 0.4rem 0;
   font-size: 0.85rem;
-  color: #2c5f2d;
+  color: var(--brand);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -262,11 +267,11 @@ label {
 .demo-box p {
   margin: 0.25rem 0;
   font-size: 0.8rem;
-  color: #556355;
+  color: var(--text-body);
 }
 
 .demo-box code {
-  background: #e4ece4;
+  background: var(--code-bg);
   padding: 0.1rem 0.3rem;
   border-radius: 3px;
   font-size: 0.78rem;

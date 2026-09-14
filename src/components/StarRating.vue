@@ -86,13 +86,13 @@ const select = (star) => emit('update:modelValue', star)
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  color: #c9c9c9;
+  color: var(--star-empty);
   transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .star-button:hover,
 .star-button.is-filled {
-  color: #f5a623;
+  color: var(--star-filled);
 }
 
 .star-button:hover {
@@ -101,7 +101,7 @@ const select = (star) => emit('update:modelValue', star)
 
 /* Visible focus ring so the control is usable without a mouse. */
 .star-button:focus-visible {
-  outline: 3px solid #2c5f2d;
+  outline: 3px solid var(--brand);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -109,11 +109,11 @@ const select = (star) => emit('update:modelValue', star)
 .star-display {
   font-size: 1.15rem;
   letter-spacing: 0.05em;
-  color: #c9c9c9;
+  color: var(--star-empty);
 }
 
 .star-display .is-filled {
-  color: #f5a623;
+  color: var(--star-filled);
 }
 
 /* Available to assistive technology, hidden from sight. */
