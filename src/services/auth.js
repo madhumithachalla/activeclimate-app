@@ -11,6 +11,7 @@
 import { computed, ref } from 'vue'
 import { readJson, writeJson, removeKey, STORAGE_KEYS } from './storage.js'
 import { sanitizeText, normaliseEmail } from '../utils/sanitize.js'
+import { computeTag, verifyTag } from './integrity.js'
 
 export const ROLES = {
   MEMBER: 'member',
@@ -103,8 +104,27 @@ const isValidUserList = (value) => {
   ))
 }
 
-const loadUsers = () => readJson(STORAGE_KEYS.users, [], isValidUserList)
-const saveUsers = (users) => writeJson(STORAGE_KEYS.users, users)
+// Stored as { records, tag } so the contents can be integrity-checked at
+// startup. An older unsigned array is still read, then re-signed on next write.
+const isValidUserStore = (value) => {
+  if (Array.isArray(value)) return isValidUserList(value)
+  return value && typeof value === 'object' && isValidUserList(value.records)
+}
+
+const loadUsers = () => {
+  const stored = readJson(STORAGE_KEYS.users, [], isValidUserStore)
+  return Array.isArray(stored) ? stored : stored.records
+}
+
+const loadUserTag = () => {
+  const stored = readJson(STORAGE_KEYS.users, [], isValidUserStore)
+  return Array.isArray(stored) ? null : stored.tag
+}
+
+const saveUsers = async (users) => {
+  const tag = await computeTag(users)
+  return writeJson(STORAGE_KEYS.users, { records: users, tag })
+}
 
 const findUserByEmail = (users, email) => {
   const target = normaliseEmail(email)
@@ -237,7 +257,7 @@ export const registerUser = async ({ name, email, password, role = ROLES.MEMBER 
   }
 
   users.push(user)
-  if (!saveUsers(users)) {
+  if (!(await saveUsers(users))) {
     return { ok: false, error: 'Could not save your account. Check browser storage settings.' }
   }
 
@@ -303,6 +323,28 @@ export const countUsersByRole = () => {
 export const DEMO_ADMIN = {
   email: 'coordinator@activeclimate.org',
   password: 'Climate2026'
+}
+
+// Recompute the tag over the stored accounts and compare. A mismatch means the
+// records were edited outside the app, so the session is dropped and the user
+// has to sign in again - which they cannot do without the real password,
+// because the password hash is covered by the tag too.
+export const verifyStoredAccounts = async () => {
+  const users = loadUsers()
+  if (!users.length) return true
+
+  const tag = loadUserTag()
+  if (tag === null) {
+    // First run after this check was added: sign what is already there.
+    await saveUsers(users)
+    return true
+  }
+
+  if (await verifyTag(users, tag)) return true
+
+  console.warn('[auth] stored accounts failed their integrity check; signing out')
+  logout()
+  return false
 }
 
 export const initAuth = async () => {

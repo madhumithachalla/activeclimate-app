@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router/index.js'
-import { initAuth } from './services/auth.js'
+import { initAuth, verifyStoredAccounts } from './services/auth.js'
 import { initTheme } from './services/theme.js'
 import { seedDemoData } from './services/demoData.js'
 
@@ -16,6 +16,10 @@ initTheme()
 const bootstrap = async () => {
   await initAuth()
   await seedDemoData()
+
+  // Runs last, so it covers anything the seed just wrote. A failed check signs
+  // the user out rather than letting an edited account record stand.
+  await verifyStoredAccounts()
 }
 
 bootstrap().finally(() => {
