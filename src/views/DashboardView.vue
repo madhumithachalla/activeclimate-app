@@ -8,8 +8,22 @@
       </p>
     </header>
 
+    <!-- An account with no trips of its own would otherwise render a wall of
+         zeros, which reads as a broken page rather than an empty one. -->
+    <section v-if="!myEntries.length" class="empty-state">
+      <h2>Nothing logged on this account yet</h2>
+      <p>
+        This dashboard shows only your own trips, so it stays empty until you log one.
+        <template v-if="isAdmin">
+          Community-wide totals across every member live on the
+          <RouterLink to="/admin">coordinator overview</RouterLink> instead.
+        </template>
+      </p>
+      <RouterLink to="/log" class="empty-cta">Log your first activity</RouterLink>
+    </section>
+
     <!-- BR (C.2): a member only ever sees their own entries here. -->
-    <Dashboard :activities="myEntries" />
+    <Dashboard v-else :activities="myEntries" />
 
     <!-- The ratings this member has left, with a link back to change them. -->
     <section class="my-ratings">
@@ -45,7 +59,7 @@ import { useActivityLog, entriesForUser } from '../services/activityLog.js'
 import { useRatings, getAggregate } from '../services/ratings.js'
 import { findActivityById } from '../data/activityGroups.js'
 
-const { currentUser } = useAuth()
+const { currentUser, isAdmin } = useAuth()
 const { entries } = useActivityLog()
 const { ratings } = useRatings()
 
@@ -85,6 +99,54 @@ h1 {
   color: var(--text-muted);
   font-size: 0.92rem;
   margin: 0;
+}
+
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed var(--border-dashed);
+  border-radius: 10px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.empty-state h2 {
+  color: var(--brand);
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  max-width: 480px;
+  margin: 0 auto 1.25rem;
+}
+
+.empty-state a {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.empty-cta {
+  display: inline-block;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  text-decoration: none;
+  padding: 0.65rem 1.35rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.empty-cta:hover {
+  background: var(--btn-bg-hover);
+  color: var(--btn-text);
+}
+
+.empty-cta:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .my-ratings {

@@ -8,7 +8,7 @@
 // It only ever runs when there is no existing data, so a real account and its
 // activities are never overwritten.
 
-import { ROLES, registerUser, listUsers, logout } from './auth.js'
+import { ROLES, registerUser, listUsers, logout, DEMO_ADMIN } from './auth.js'
 import { addEntry, allEntries } from './activityLog.js'
 import { submitRating } from './ratings.js'
 import { readJson, writeJson } from './storage.js'
@@ -59,6 +59,20 @@ const VAISH_RATINGS = [
   { activityId: 2, score: 4, comment: '' }
 ]
 
+// The coordinator rides too. Without this their dashboard reads as all zeros,
+// which looks like a broken page rather than an account with no trips yet.
+const COORDINATOR_TRIPS = [
+  { activity: 'cycling', distance: 9.3, duration: 31, date: daysAgo(2) },
+  { activity: 'cycling', distance: 14.8, duration: 46, date: daysAgo(7) },
+  { activity: 'running', distance: 5.5, duration: 32, date: daysAgo(12) },
+  { activity: 'hiking', distance: 11.7, duration: 168, date: daysAgo(20) }
+]
+
+const COORDINATOR_RATINGS = [
+  { activityId: 4, score: 5, comment: 'The St Kilda group has the best safety briefing of any session we run.' },
+  { activityId: 3, score: 4, comment: '' }
+]
+
 const JORDAN_RATINGS = [
   { activityId: 1, score: 3, comment: 'Good group, though the Sunday pace is quicker than the listing suggests.' },
   { activityId: 2, score: 5, comment: 'Friendly and genuinely beginner-friendly. The 5km option is a good entry point.' },
@@ -90,6 +104,14 @@ export const seedDemoData = async () => {
 
   await seedMember(DEMO_MEMBER, VAISH_TRIPS, VAISH_RATINGS)
   await seedMember(SECOND_MEMBER, JORDAN_TRIPS, JORDAN_RATINGS)
+
+  // initAuth creates the coordinator before this runs, so look it up rather
+  // than registering it again.
+  const coordinator = listUsers().find((user) => user.email === DEMO_ADMIN.email)
+  if (coordinator) {
+    COORDINATOR_TRIPS.forEach((trip) => addEntry(coordinator, trip))
+    COORDINATOR_RATINGS.forEach((rating) => submitRating({ ...rating, user: coordinator }))
+  }
 
   // registerUser signs each new account in as a side effect; the seed should
   // leave the visitor signed out.
